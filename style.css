@@ -1,0 +1,81 @@
+/*
+Theme Name: OF Directory
+Description: Purpose-built theme for the OnlyFans creator directory subdomain. Auto-generates navigation from every page using the Category Directory or Directory Hub template, so new pages are never orphaned from site navigation again.
+Author: The Influencers Network
+Version: 1.0.0
+Text Domain: of-directory
+*/
+
+:root{
+  --bg:#0c0c0f;
+  --surface:#131318;
+  --surface-2:#1a1a24;
+  --border:#232330;
+  --text:#e8e8ec;
+  --muted:#8b8b98;
+  --accent:#c2410c;
+  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--font-body);
+  line-height:1.6;
+}
+a{color:var(--accent);}
+img{max-width:100%; height:auto;}
+
+.of-wrap{max-width:1100px; margin:0 auto; padding:0 20px;}
+
+/* ── Site nav ─────────────────────────────────────────────────── */
+.of-nav{
+  position:sticky; top:0; z-index:50;
+  background:rgba(12,12,15,.92); backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--border);
+}
+.of-nav-inner{
+  max-width:1100px; margin:0 auto; padding:12px 20px;
+  display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+}
+.of-nav-logo{
+  font-family:var(--font-mono); font-weight:600; font-size:14px;
+  color:var(--text); text-decoration:none; white-space:nowrap;
+}
+.of-nav-links{display:flex; align-items:center; gap:2px; flex:1; flex-wrap:wrap;}
+.of-nav-link{
+  font-size:12.5px; font-family:var(--font-mono); color:var(--muted);
+  padding:6px 12px; border-radius:6px; text-decoration:none;
+}
+.of-nav-link:hover{color:var(--text); background:var(--surface-2);}
+.of-nav-link.is-active{color:var(--accent);}
+
+/* ── Page content ─────────────────────────────────────────────── */
+main.of-main{max-width:1100px; margin:0 auto; padding:40px 20px 80px;}
+main.of-main h1{font-size:32px; line-height:1.2; margin:0 0 28px;}
+
+/* ── Footer ───────────────────────────────────────────────────── */
+.of-footer{border-top:1px solid var(--border); padding:32px 0; margin-top:40px;}
+.of-footer-inner{
+  max-width:1100px; margin:0 auto; padding:0 20px;
+  display:flex; flex-wrap:wrap; gap:10px 20px; align-items:center;
+  font-size:13px; color:var(--muted);
+}
+.of-footer-links a{color:var(--muted); margin-right:16px; text-decoration:none;}
+.of-footer-links a:hover{color:var(--text);}
+
+/* ── Hub page cards ───────────────────────────────────────────── */
+.of-hub-grid{
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+  gap:16px; margin-top:24px;
+}
+.of-hub-card{
+  background:var(--surface); border:1px solid var(--border); border-radius:12px;
+  padding:20px; text-decoration:none; color:var(--text); display:block;
+}
+.of-hub-card:hover{background:var(--surface-2);}
+.of-hub-card h3{margin:0 0 6px; font-size:17px;}
+.of-hub-card p{margin:0; font-size:13.5px; color:var(--muted);}
