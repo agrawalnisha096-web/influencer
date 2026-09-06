@@ -100,8 +100,20 @@ function of_get_submit_page() {
 	return null;
 }
 
-function of_render_nav_links( $current_id ) {
-	foreach ( of_get_category_pages() as $p ) {
+/**
+ * Renders the nav as: the first $max_inline category pages as direct tabs,
+ * then a "More" dropdown (native <details>, no JS needed) holding every
+ * category page — the full list, not just the overflow — so the dropdown
+ * alone is always a complete, working nav on its own. That's what mobile
+ * relies on once the inline tabs are hidden by the CSS breakpoint, and
+ * it means growing the number of category pages over time never breaks
+ * the layout — it just grows the dropdown instead of wrapping or
+ * squeezing the bar.
+ */
+function of_render_nav_links( $current_id, $max_inline = 3 ) {
+	$pages = of_get_category_pages();
+
+	foreach ( array_slice( $pages, 0, $max_inline ) as $p ) {
 		$active = ( $p->ID === $current_id ) ? ' of-active' : '';
 		printf(
 			'<a class="of-nav-link%s" href="%s">%s</a>',
@@ -109,6 +121,20 @@ function of_render_nav_links( $current_id ) {
 			esc_url( get_permalink( $p ) ),
 			esc_html( get_the_title( $p ) )
 		);
+	}
+
+	if ( count( $pages ) > 0 ) {
+		echo '<details class="of-nav-more"><summary>More</summary><div class="of-nav-more-menu">';
+		foreach ( $pages as $p ) {
+			$active = ( $p->ID === $current_id ) ? ' of-active' : '';
+			printf(
+				'<a class="%s" href="%s">%s</a>',
+				trim( 'of-nav-more-link' . $active ),
+				esc_url( get_permalink( $p ) ),
+				esc_html( get_the_title( $p ) )
+			);
+		}
+		echo '</div></details>';
 	}
 }
 
