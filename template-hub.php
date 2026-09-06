@@ -4,12 +4,14 @@
  *
  * The single hub page linking out to every category page. Assign this
  * template to exactly one page — the site's main directory index.
+ *
+ * No <h1> is rendered here: the migrated hub content already carries its
+ * own <h1 class="page-title">, so this deliberately avoids a duplicate H1.
  */
 get_header();
 ?>
 <main class="of-main">
 	<?php while ( have_posts() ) : the_post(); ?>
-		<h1><?php the_title(); ?></h1>
 		<?php the_content(); ?>
 	<?php endwhile; ?>
 
