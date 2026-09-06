@@ -6,6 +6,17 @@
 add_theme_support( 'title-tag' );
 add_theme_support( 'post-thumbnails' );
 
+/**
+ * Every page on this site is fully-formed HTML (embedded <style>/<script>
+ * blocks included) migrated as-is, never plain prose meant for automatic
+ * paragraph breaks. WordPress's default wpautop filter doesn't know about
+ * <style>/<script> context and injects <p>/<br> tags into the middle of
+ * CSS rules and JS statements, corrupting both. Remove it globally — no
+ * page here relies on it.
+ */
+remove_filter( 'the_content', 'wpautop' );
+remove_filter( 'the_excerpt', 'wpautop' );
+
 add_action( 'wp_enqueue_scripts', function () {
 	wp_enqueue_style( 'of-directory-style', get_stylesheet_uri(), array(), wp_get_theme()->get( 'Version' ) );
 } );
