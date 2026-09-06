@@ -19,6 +19,12 @@ remove_filter( 'the_excerpt', 'wpautop' );
 
 add_action( 'wp_enqueue_scripts', function () {
 	wp_enqueue_style( 'of-directory-style', get_stylesheet_uri(), array(), wp_get_theme()->get( 'Version' ) );
+	wp_enqueue_style(
+		'of-directory-fonts',
+		'https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap',
+		array(),
+		null
+	);
 } );
 
 /**
@@ -45,15 +51,19 @@ function of_get_cluster_pages() {
 			'sort_column' => 'menu_order,post_title',
 		) );
 		foreach ( $found as $p ) {
-			$p->of_is_hub = ( 'template-hub.php' === $template );
-			$pages[]      = $p;
+			$p->of_is_hub    = ( 'template-hub.php' === $template );
+			$p->of_is_submit = ( 'submit-profile' === $p->post_name );
+			$pages[]         = $p;
 		}
 	}
 
-	// Hub page(s) first, then categories in menu_order/title order.
+	// Hub first, then submit-profile last, categories alphabetical in between.
 	usort( $pages, function ( $a, $b ) {
 		if ( $a->of_is_hub !== $b->of_is_hub ) {
 			return $a->of_is_hub ? -1 : 1;
+		}
+		if ( $a->of_is_submit !== $b->of_is_submit ) {
+			return $a->of_is_submit ? 1 : -1;
 		}
 		return strcmp( $a->post_title, $b->post_title );
 	} );
@@ -61,14 +71,53 @@ function of_get_cluster_pages() {
 	return $pages;
 }
 
-function of_render_nav_links( $current_id ) {
+/**
+ * The tab-style links in the main nav bar and footer "Rankings" column —
+ * every cluster page except the hub (which is the logo/home link) and
+ * submit-profile (which gets its own button, matching the original design).
+ */
+function of_get_category_pages() {
+	return array_values( array_filter( of_get_cluster_pages(), function ( $p ) {
+		return ! $p->of_is_hub && ! $p->of_is_submit;
+	} ) );
+}
+
+function of_get_hub_page() {
 	foreach ( of_get_cluster_pages() as $p ) {
-		$active = ( $p->ID === $current_id ) ? ' is-active' : '';
+		if ( $p->of_is_hub ) {
+			return $p;
+		}
+	}
+	return null;
+}
+
+function of_get_submit_page() {
+	foreach ( of_get_cluster_pages() as $p ) {
+		if ( $p->of_is_submit ) {
+			return $p;
+		}
+	}
+	return null;
+}
+
+function of_render_nav_links( $current_id ) {
+	foreach ( of_get_category_pages() as $p ) {
+		$active = ( $p->ID === $current_id ) ? ' of-active' : '';
 		printf(
 			'<a class="of-nav-link%s" href="%s">%s</a>',
 			$active,
 			esc_url( get_permalink( $p ) ),
-			esc_html( $p->of_is_hub ? 'Directory' : get_the_title( $p ) )
+			esc_html( get_the_title( $p ) )
+		);
+	}
+}
+
+function of_render_footer_links( $current_id ) {
+	foreach ( of_get_category_pages() as $p ) {
+		printf(
+			'<li><a href="%s">%s</a></li>',
+			esc_url( get_permalink( $p ) ),
+			esc_html( get_the_title( $p ) )
 		);
 	}
 }
