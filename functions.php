@@ -6,6 +6,8 @@
 add_theme_support( 'title-tag' );
 add_theme_support( 'post-thumbnails' );
 
+require get_stylesheet_directory() . '/inc/seo.php';
+
 /**
  * Every page on this site is fully-formed HTML (embedded <style>/<script>
  * blocks included) migrated as-is, never plain prose meant for automatic

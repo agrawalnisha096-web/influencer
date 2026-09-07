@@ -13,6 +13,9 @@ $of_submit = of_get_submit_page();
 <head>
 <meta charset="<?php bloginfo( 'charset' ); ?>">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/favicon-32.png' ); ?>" sizes="32x32">
+<link rel="icon" href="https://theinfluencersnetwork.com/wp-content/uploads/2025/10/cropped-cropped-2-192x192.png" sizes="192x192">
+<link rel="apple-touch-icon" href="https://theinfluencersnetwork.com/wp-content/uploads/2025/10/cropped-cropped-2-180x180.png">
 <?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>
