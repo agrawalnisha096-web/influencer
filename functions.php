@@ -19,6 +19,15 @@ require get_stylesheet_directory() . '/inc/seo.php';
 remove_filter( 'the_content', 'wpautop' );
 remove_filter( 'the_excerpt', 'wpautop' );
 
+/**
+ * This site has no author archives worth indexing — just the automation
+ * account used to publish pages. Drop the users sitemap entirely rather
+ * than let Google crawl an author page nobody should land on.
+ */
+add_filter( 'wp_sitemaps_add_provider', function ( $provider, $name ) {
+	return 'users' === $name ? false : $provider;
+}, 10, 2 );
+
 add_action( 'wp_enqueue_scripts', function () {
 	wp_enqueue_style( 'of-directory-style', get_stylesheet_uri(), array(), wp_get_theme()->get( 'Version' ) );
 	wp_enqueue_style(
